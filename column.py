@@ -72,9 +72,6 @@ column_A_BCD.print_heat_of_vaporization()
 column_A_BCD.print_average_relative_volatility()
 column_A_BCD.print_Rmin()
 
-
-
-
 # # Example usage
 # component_names = ['Pentane', 'Hexane', 'Heptane']
 # temperature_finder = FindTemperature(component_names)
