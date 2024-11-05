@@ -29,7 +29,7 @@ class Underwood:
     def _component_to_z_Feed(self):
         z_dict = {}
         sum_streams_column = components.total_section_flowrate(self.all_components)
-        print('The Sum of streams in this column is: {}'.format(sum_streams_column))
+        # print('The Sum of streams in this column is: {}'.format(sum_streams_column))
         for component in self.all_components:
             z_dict[component] = components.get_single_flowrate(component) / sum_streams_column
         return z_dict
@@ -38,7 +38,7 @@ class Underwood:
         for component in self.all_components:
             alpha_comp = self.average_relative_volatilities[component]
             z_comp = self.z_dict[component]
-            print("z ({}) is {}".format(component, z_comp))
+            # print("z ({}) is {}".format(component, z_comp))
             sum_underwood += alpha_comp*z_comp / (alpha_comp - phi)
         return sum_underwood
     
@@ -46,7 +46,7 @@ class Underwood:
             initial_guess = (lower_bound + upper_bound) / 2
             solution = fsolve(self._objective_function, initial_guess)
             if lower_bound <= solution[0] <= upper_bound:
-                print('Phi is: {}\nBounds: [{}; {}]'.format(solution[0], lower_bound, upper_bound))
+                # print('Phi is: {}\nBounds: [{}; {}]'.format(solution[0], lower_bound, upper_bound))
                 return solution[0]
             else:
                 raise ValueError("Solution found by fsolve is outside the bounds")
@@ -54,11 +54,11 @@ class Underwood:
         sum = 0
         for component in self.all_components:
             alpha = self.average_relative_volatilities[component] #use averaged values
-            print('alpha of {} is {}'.format(component, alpha))
+            # print('alpha of {} is {}'.format(component, alpha))
             stream_component = components.get_single_flowrate(component)
             sum_of_distillate_streams = components.total_section_flowrate(self.components_top)
             x = stream_component / sum_of_distillate_streams
-            print('x of {} is {}'.format(component, x))
+            # print('x of {} is {}'.format(component, x))
             if component in self.components_top:
                 sum += alpha*x / (alpha - self.phi)
         return sum - 1

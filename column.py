@@ -70,7 +70,7 @@ column_A_BCD = Column(['A', 'B'], [ 'C'])
 column_A_BCD.print_temperature()
 column_A_BCD.print_heat_of_vaporization()
 column_A_BCD.print_average_relative_volatility()
-column_A_BCD.print_Rmin()
+# column_A_BCD.print_Rmin()
 column_A_BCD.print_R_act()
 
 # # Example usage
