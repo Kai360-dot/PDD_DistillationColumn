@@ -38,6 +38,7 @@ class Underwood:
         for component in self.all_components:
             alpha_comp = self.average_relative_volatilities[component]
             z_comp = self.z_dict[component]
+            print("z ({}) is {}".format(component, z_comp))
             sum_underwood += alpha_comp*z_comp / (alpha_comp - phi)
         return sum_underwood
     
@@ -52,7 +53,7 @@ class Underwood:
     def get_Rmin(self, relative_volatility_distillate_conditions):
         sum = 0
         for component in self.all_components:
-            alpha = relative_volatility_distillate_conditions[component]
+            alpha = self.average_relative_volatilities[component] #use averaged values
             print('alpha of {} is {}'.format(component, alpha))
             stream_component = components.get_single_flowrate(component)
             sum_of_distillate_streams = components.total_section_flowrate(self.components_top)

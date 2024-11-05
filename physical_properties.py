@@ -58,10 +58,10 @@ class PhysicalProperties:
             alpha[component] = self.get_vapor_pressure(component, temperature_top) / \
                 self.get_vapor_pressure(heavy_key, temperature_top)
         return alpha
+    
 # # Example:
 # # Initialize PhysicalProperties with the component data
-# phys_props = PhysicalProperties(nist_data.Antoine_parameters, nist_data.Heat_vap_parameters)
-
+phys_props = PhysicalProperties(nist_data.Antoine_parameters, nist_data.Heat_vap_parameters)
 # # Example usage
-# print(phys_props.get_vapor_pressure('Pentane', 308.81))
+print('Vapor pressure',phys_props.get_vapor_pressure('C', 371.1))
 # print(phys_props.get_heat_of_vaporization('Heptane', 333))

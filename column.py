@@ -35,8 +35,8 @@ class Column:
         self.avg_relative_volatility_HK = self.avg_relative_volatility[self.heavy_key]
 
         self.R_min = Underwood(
-            [component for component in self.components_top],
-            [component for component in self.components_bottom],
+            self.components_top,
+            self.components_bottom,
             self.avg_relative_volatility, 
             self.avg_relative_volatility_LK, 
             self.avg_relative_volatility_HK
@@ -66,11 +66,12 @@ class Column:
         print(f'R_act = {self.R_min*1.2}')
 
 # Modify example code below to simulate colunm.
-column_A_BCD = Column(['A'], ['B', 'C', 'D'])
+column_A_BCD = Column(['A', 'B'], [ 'C'])
 column_A_BCD.print_temperature()
 column_A_BCD.print_heat_of_vaporization()
 column_A_BCD.print_average_relative_volatility()
 column_A_BCD.print_Rmin()
+column_A_BCD.print_R_act()
 
 # # Example usage
 # component_names = ['Pentane', 'Hexane', 'Heptane']
