@@ -44,7 +44,8 @@ class PhysicalProperties:
         alpha_avg = {}
         for component in all_components:
             alpha_top = self.get_vapor_pressure(component, temperature_top) / self.get_vapor_pressure(heavy_key, temperature_top)
-            alpha_bottom = self.get_vapor_pressure(component, temperature_bottom) / self.get_vapor_pressure(heavy_key, temperature_bottom)
+            alpha_bottom = self.get_vapor_pressure(component, temperature_bottom) / \
+                self.get_vapor_pressure(heavy_key, temperature_bottom)
             alpha_avg[component] = np.sqrt(alpha_top * alpha_bottom)
         return light_key, heavy_key, alpha_avg
 
@@ -54,7 +55,8 @@ class PhysicalProperties:
         alpha = {}
         heavy_key = self.identify_heavy_key(components_bottom, temperature_bottom)
         for component in all_components:
-            alpha[component] = self.get_vapor_pressure(component, temperature_top) / self.get_vapor_pressure(heavy_key, temperature_top)
+            alpha[component] = self.get_vapor_pressure(component, temperature_top) / \
+                self.get_vapor_pressure(heavy_key, temperature_top)
         return alpha
 # # Example:
 # # Initialize PhysicalProperties with the component data

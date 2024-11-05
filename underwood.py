@@ -22,7 +22,9 @@ class Underwood:
         self.components_top = ComponentsTop
         self.average_relative_volatility_LK = AverageRelativeVolatilityLK
         self.average_relative_volatility_HK = AverageRelativeVolatilityHK
-        self.phi = self._get_phi(self.average_relative_volatilities, self.z_dict, self.average_relative_volatility_HK, self.average_relative_volatility_LK)
+        self.phi = self._get_phi(self.average_relative_volatilities, 
+                                 self.z_dict, self.average_relative_volatility_HK, 
+                                 self.average_relative_volatility_LK)
 
     def _component_to_z_Feed(self):
         z_dict = {}
