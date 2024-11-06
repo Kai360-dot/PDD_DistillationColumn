@@ -1,11 +1,13 @@
 from column import Column
 
 class ColumnManager:
-    def __init__(self):
+    """Defaults to pressure of 1 bar."""
+    def __init__(self, pressure = 1):
         self.columns = {}
+        self.pressure = pressure
 
     def add_column(self, name, top_components, bottom_components):
-        self.columns[name] = Column(top_components, bottom_components)
+        self.columns[name] = Column(top_components, bottom_components, self.pressure)
 
     def print_all_columns_data(self):
         for name, column in self.columns.items():

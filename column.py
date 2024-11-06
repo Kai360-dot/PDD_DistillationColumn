@@ -10,14 +10,15 @@ phys_props = PhysicalProperties(nist_data.Antoine_parameters, nist_data.Heat_vap
 components = Components(nist_data.components_data, nist_data.Antoine_parameters, nist_data.Heat_vap_parameters)
 
 class Column:
-    """Represents a single distillation column."""
-    def __init__(self, components_top_aliases, components_bottom_aliases):
+    """Represents a single distillation column.
+    Defaults to 1 bar pressure if not specified otherwise."""
+    def __init__(self, components_top_aliases, components_bottom_aliases, pressure = 1):
         self.components_top = components_top_aliases
         self.components_bottom = components_bottom_aliases
         self.components_feed = list(set(self.components_top + self.components_bottom))
-
-        self.Temperature_top = self._find_temperature(self.components_top)
-        self.Temperature_bottom = self._find_temperature(self.components_bottom)
+        self.pressure = pressure
+        self.Temperature_top = self._find_temperature(self.components_top) # pressure dependence in function call
+        self.Temperature_bottom = self._find_temperature(self.components_bottom) # pressure dependence in function call
         
 
         self.split_fraction_top = self._get_split_fraction(self.components_top) # top to feed molar flow
@@ -62,7 +63,7 @@ class Column:
 
     def _find_temperature(self, components_of_section):
         """Finds and returns the temperature in the tops or bottoms"""
-        return FindTemperature([component for component in components_of_section]).getTemperature()
+        return FindTemperature([component for component in components_of_section], self.pressure).getTemperature()
 
     def _calculate_heats_of_vaporization(self, components, temperature):
         return {component: phys_props.get_heat_of_vaporization(component, temperature) for component in components}
@@ -141,11 +142,14 @@ class Column:
     def print_relative_duties(self):
         print(f'The relative duties [MJ / kmol] are:\nCondenser: {self.relative_duty_condenser:.3f}\n'\
               f'Reboiler: {self.relative_duty_reboiler:.3f}')
+        
+    def print_column_pressure(self):
+        print(f'Pressure [bar] = {self.pressure}')
 
     def print_column_data(self):
         print('----------------------------------')
         self.print_present_components()
-        # self.print_temperature()
+        self.print_temperature()
         # self.print_heat_of_vaporization()
         # self.print_average_relative_volatility()
         # self.print_R_act()
@@ -153,6 +157,7 @@ class Column:
         # self.print_condenser_duty()
         # self.print_reboiler_duty()
         self.print_relative_duties()
+        self.print_column_pressure()
         print('----------------------------------')
 
     

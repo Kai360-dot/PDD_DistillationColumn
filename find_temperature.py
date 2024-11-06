@@ -9,8 +9,8 @@ components = Components(nist_data.components_data, nist_data.Antoine_parameters,
 phys_props = PhysicalProperties(nist_data.Antoine_parameters, nist_data.Heat_vap_parameters)
 
 class FindTemperature:
-    """Class to find the temperature in a given section of the column, default pressure 1 bar."""
-    def __init__(self, component_aliases, p_tot=1):
+    """Class to find the temperature in a given section of the column."""
+    def __init__(self, component_aliases, pressure):
         """
         Parameters:
         - component_aliases:  list of components present in the section.
@@ -19,7 +19,7 @@ class FindTemperature:
         self.component_aliases = component_aliases
         self.molarFlows = self.getMolarFlows()
         self.totalMolarFlow = self.getTotalMolarFlow()
-        self.p_tot = p_tot
+        self.p_tot = pressure
 
     def getMolarFlows(self):
         """Fetches molar flows for the specified components from component_settings."""
@@ -42,6 +42,7 @@ class FindTemperature:
         for component in self.molarFlows:
             sum_terms += phys_props.get_vapor_pressure(component, T) * self.getMolFraction(component)
         return sum_terms - self.p_tot
+    
     def _checkTemperatureBounds(self, Temperature):
         for component in self.component_aliases:
             T = Temperature
@@ -52,8 +53,11 @@ class FindTemperature:
                 raise ValueError(f"Temperature {T} K is out of range for {component}. Valid range is {T_lo} to {T_up} K.")
     def getTemperature(self):
         """Finds the temperature using a numerical solver."""
-        initial_guess = 300.0  # Initial guess for temperature in Kelvin
-        solution = fsolve(self.objectiveEquation, initial_guess)
+        initial_guess = 350.0  # Initial guess for temperature in Kelvin
+        solution, info, ier, msg = fsolve(self.objectiveEquation, initial_guess, full_output=True)
+        if ier != 1:
+            raise RuntimeError(f"Solver did not converge: {msg}")
+        
         self._checkTemperatureBounds(solution)
         return solution[0]
 
