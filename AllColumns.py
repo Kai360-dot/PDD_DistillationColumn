@@ -29,4 +29,4 @@ column_manager.add_column('column_B_C', ['B'], ['C'])
 column_manager.add_column('column_C_D', ['C'], ['D'])
 
 # Print data for all columns
-column_manager.print_all_columns_data()
+# column_manager.print_all_columns_data()
