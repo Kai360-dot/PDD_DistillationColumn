@@ -10,14 +10,14 @@ class PhysicalProperties:
         self.heat_vap_params = heat_vap_params
 
     def get_vapor_pressure(self, chemical, temperature):
-        """Calculate vapor pressure using Antoine equation."""
+        """Calculate vapor pressure using Antoine equation in bar for T in Kelvin."""
         chemical_name = components.get_chemical_name(chemical)
         params = self.antoine_params[chemical_name]
         A, B, C, D, E, F, G, T_lo, T_up = params.values()
         return np.exp(A + (B / (temperature + C)) + D * temperature + E * np.log(temperature) + F * (temperature ** G))
 
     def get_heat_of_vaporization(self, chemical, temperature):
-        """Calculate heat of vaporization."""
+        """Calculate heat of vaporization in kJ / mol"""
         chemical_name = components.get_chemical_name(chemical)
         params = self.heat_vap_params[chemical_name]
         A, B, C, Tc, T_lo, T_up = params.values()
