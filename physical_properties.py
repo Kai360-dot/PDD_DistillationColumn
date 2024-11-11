@@ -15,6 +15,16 @@ class PhysicalProperties:
         params = self.antoine_params[chemical_name]
         A, B, C, D, E, F, G, T_lo, T_up = params.values()
         return np.exp(A + (B / (temperature + C)) + D * temperature + E * np.log(temperature) + F * (temperature ** G))
+    
+    def get_sum_vapor_pressures(self, components_list, temperature):
+        """Give list of present components to get vapor pressure sum in bar."""
+        sum = 0
+        for component in components_list:
+            #mol fraction consideration:
+            x_component = components.get_single_flowrate(component) / components.total_section_flowrate(components_list)
+            sum += self.get_vapor_pressure(component, temperature) * x_component
+            # print('Adding:',component,' fraction: ', x_component, 'press: ', self.get_vapor_pressure(component, temperature))
+        return sum
 
     def get_heat_of_vaporization(self, chemical, temperature):
         """Calculate heat of vaporization in kJ / mol"""

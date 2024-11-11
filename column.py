@@ -19,7 +19,7 @@ class Column:
         self.pressure = pressure
         self.Temperature_top = self._find_temperature(self.components_top) # pressure dependence in function call
         self.Temperature_bottom = self._find_temperature(self.components_bottom) # pressure dependence in function call
-        
+        self.Temperature_difference = self.Temperature_bottom - self.Temperature_top
 
         self.split_fraction_top = self._get_split_fraction(self.components_top) # top to feed molar flow
         self.split_fraction_bottom = self._get_split_fraction(self.components_bottom) # bottom to feed molar flow
@@ -79,6 +79,7 @@ class Column:
         RR = self.R_act
         D = self.distillate_flowrate
         H_vap_avg = self.avg_heat_of_vap_bottom
+        # print("Avg. Heat Of Vap Reboiler: ", self.avg_heat_of_vap_bottom)
         Q_R = D * (1+ RR)* H_vap_avg
         return Q_R
     
@@ -86,6 +87,7 @@ class Column:
         RR = self.R_act
         D = self.distillate_flowrate
         H_vap_avg = self.avg_heat_of_vap_top
+        # print("Avg. Heat Of Vap Condenser: ", self.avg_heat_of_vap_top)
         Q_C = D * (1+ RR)* H_vap_avg
         return Q_C
     
@@ -109,8 +111,10 @@ class Column:
 
 
     def print_temperature(self):
-        print(f'The Temperature of the Distillate (top of the column) is:\n{self.Temperature_top:.3f} K')
-        print(f'The Temperature of the Bottoms (bottom of the column) is:\n{self.Temperature_bottom:.3f} K')
+        print(f'The Temperature of the Distillate (top of the column) is:\n{self.Temperature_top:.2f} K')
+        print(f'The Temperature of the Bottoms (bottom of the column) is:\n{self.Temperature_bottom:.2f} K')
+        print(f'The Temperature Difference is:\n{(self.Temperature_bottom - self.Temperature_top):.2f} K')
+
 
     def print_heat_of_vaporization(self):
         print(f'The heats of vaporization [kJ/mol] in the top: {self.heats_of_vaporization_top}')
@@ -146,6 +150,9 @@ class Column:
     def print_column_pressure(self):
         print(f'Pressure [bar] = {self.pressure}')
 
+    def print_distillate_flowrate(self):
+        print(f'Distillate flowrate {self.distillate_flowrate} kmol/h')
+
     def print_column_data(self):
         print('----------------------------------')
         self.print_present_components()
@@ -153,11 +160,12 @@ class Column:
         # self.print_heat_of_vaporization()
         # self.print_average_relative_volatility()
         # self.print_R_act()
-        self.print_split_fractions()
+        # self.print_split_fractions()
         # self.print_condenser_duty()
         # self.print_reboiler_duty()
-        self.print_relative_duties()
+        # self.print_relative_duties()
         self.print_column_pressure()
+        # self.print_distillate_flowrate()
         print('----------------------------------')
 
     
@@ -165,8 +173,6 @@ class Column:
 # Modify example code below to simulate colunm.
 # column_A_BCD = Column(['A', 'B'], [ 'C'])
 # column_A_BCD.print_column_data()
-
-
 
 
 # # Example usage
